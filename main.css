@@ -1,1 +1,5 @@
-body {background-color: coral;}
+body {
+  background: #928374;
+  color: white;
+  margin: 0;
+}
