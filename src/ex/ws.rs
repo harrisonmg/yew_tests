@@ -4,23 +4,22 @@ use yew::prelude::*;
 pub fn client() -> Html {
     html! {
         <>
-        <style>{ "label { display: inline-block; width: 50px; }" }</style>
+        <style>{"label { display: inline-block; width: 128px; }"}</style>
         <form action="" method="get">
             <div>
-                <label>{ "string" }</label>
+                <label>{"string"}</label>
                     <input type="text" name="string" value="( . _ .)"/>
             </div>
             <div>
-                <label>{ "int" }</label>
+                <label>{"int"}</label>
                 <input type="number" name="int" value="8675209"/>
             </div>
             <div>
-                <label>{ "float" }</label>
+                <label>{"float"}</label>
                 <input type="number" name="float" value="3.14159"/>
             </div>
             <div>
-                //<input type="sumbit" value="send"/>
-                <button>{ "send" }</button>
+                <button>{"[send]"}</button>
             </div>
         </form>
         </>
