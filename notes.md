@@ -6,25 +6,32 @@ rust
 yew
 
 # crates
-* trunk
-* yew
+- trunk
+- yew
 
 # proof of concepts
+- [x] embed connection info in url
 - [ ] websocket connection with ip + port
-    - [x] embed via url
+    - [ ] serde some messages with float, int, string
 - [ ] render image in webgl
+    - [ ] render image
     - [ ] render text
+    - [ ] input?
+        - click, release
+        - drag
+        - scroll
+        - keyboard
 - [ ] cut puzzle piece in rust
 
 # need
-* rust image manipulation library
+- rust image manipulation library
 
 # user info
-* name
-* cursor color
+- name
+- cursor color
 
 # connection
 1. generate and share link
-2. ping
+2. ping (handled by websocket?)
 3. submit name and cursor color
 4. download image
