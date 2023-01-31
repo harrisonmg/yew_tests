@@ -2,6 +2,7 @@
   --bg: #928374;
   --color: black;
   --font-size: 32px;
+  --margin: 4px;
 }
 
 body {
@@ -26,7 +27,7 @@ button {
   background: transparent;
   border: none;
   padding: 0;
-  padding-bottom: 4px;
+  padding-bottom: var(--margin);
 }
 
 button:hover {
@@ -35,5 +36,11 @@ button:hover {
 }
 
 input {
-  height: var(--font-size)
+  height: calc(var(--font-size) + var(--margin));
+  font-family: inherit;
+  font-weight: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  background: transparent;
+  margin: var(--margin);
 }
