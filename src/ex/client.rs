@@ -25,7 +25,7 @@ pub fn client() -> Html {
                     <span/>
                     <label class="file-select" style="width: auto">
                         {"[choose file]"}
-                        <input type="file" style="display: none" change={on_file_select}/>
+                        <input onchange={on_file_select} type="file" style="display: none"/>
                     </label>
                 </div>
                 <div>
