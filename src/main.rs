@@ -55,8 +55,8 @@ fn switch(routes: Route) -> Html {
         Route::NotFound => html! { <div>{"404"}</div> },
         Route::Home => html! { <Home/> },
         Route::Embed { address } => html! { <ex::embed::Embed address={address}/> },
-        Route::WsClient => html! { <ex::ws::Client/> },
-        Route::WsServer => html! { <ex::ws::Server/> },
+        Route::WsClient => html! { <ex::client::Client/> },
+        Route::WsServer => html! { <ex::server::Server/> },
     }
 }
 

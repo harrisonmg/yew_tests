@@ -19,7 +19,7 @@ body {
   font-size: var(--font-size);
 }
 
-button {
+button, .file-select {
   font-family: inherit;
   font-weight: inherit;
   font-size: inherit;
@@ -30,7 +30,7 @@ button {
   padding-bottom: var(--margin);
 }
 
-button:hover {
+button:hover, .file-select:hover {
   background-color: var(--color);
   color: var(--bg);
 }
