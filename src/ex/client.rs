@@ -1,4 +1,4 @@
-use web_sys::HtmlInputElement;
+use web_sys::{FormData, HtmlFormElement, HtmlInputElement};
 use yew::prelude::*;
 
 #[function_component(Client)]
@@ -19,10 +19,18 @@ pub fn client() -> Html {
 
     let filename = file.as_ref().map_or(String::new(), |file| file.name());
 
+    //let file_clone = file.clone();
+    let on_submit = Callback::from(move |e: SubmitEvent| {
+        let form: HtmlFormElement = e.target_unchecked_into();
+        let data = FormData::new_with_form(&form).unwrap();
+        log::info!("{}", data.to_string());
+        // prints but then leaves page from submission
+    });
+
     html! {
         <>
             <style>{"label { display: inline-block; width: 128px; }"}</style>
-            <form action="" method="get">
+            <form action="" method="get" onsubmit={on_submit}>
                 <div>
                     <label>{"string"}</label>
                     <input type="text" name="string" value="( . _ .)" required=true/>
@@ -38,14 +46,14 @@ pub fn client() -> Html {
                 <div>
                     <span style="width: 128px"/>
                     <label class="file-select" style="width: auto">
-                        {"[choose image]"}
-                        <input onchange={on_file_select} type="file" accept="image/*" style="display: none"/>
+                       {"[choose image]"}
+                       <input onchange={on_file_select} type="file" accept="image/*" style="display: none" required=true/>
                     </label>
                     <span>{" "}</span>
                     <span>{filename}</span>
                 </div>
                 <div>
-                    <button>{"[send]"}</button>
+                    <button type="submit" formaction="">{"[send]"}</button>
                 </div>
             </form>
         </>
