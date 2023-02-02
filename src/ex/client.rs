@@ -24,7 +24,10 @@ pub fn client() -> Html {
         e.prevent_default();
         let form: HtmlFormElement = e.target_unchecked_into();
         let data = FormData::new_with_form(&form).unwrap();
-        log::info!("{}", data.to_string());
+        let string = data.get("string").as_string().unwrap();
+        let int = data.get("int").as_f64().unwrap() as u32;
+        let float = data.get("float").as_f64().unwrap();
+        log::info!("{string}, {int}, {float}");
     });
 
     html! {
@@ -53,7 +56,8 @@ pub fn client() -> Html {
                         type="file"
                         accept="image/*"
                         style="width: 1px; height: 1px"
-                        required=true/>
+                        //required=true/>
+                        />
                     <span>{filename}</span>
                 </div>
                 <div>
