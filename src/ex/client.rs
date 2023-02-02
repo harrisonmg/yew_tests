@@ -21,16 +21,16 @@ pub fn client() -> Html {
 
     //let file_clone = file.clone();
     let on_submit = Callback::from(move |e: SubmitEvent| {
+        e.prevent_default();
         let form: HtmlFormElement = e.target_unchecked_into();
         let data = FormData::new_with_form(&form).unwrap();
         log::info!("{}", data.to_string());
-        // prints but then leaves page from submission
     });
 
     html! {
         <>
             <style>{"label { display: inline-block; width: 128px; }"}</style>
-            <form action="" method="get" onsubmit={on_submit}>
+            <form method="get" onsubmit={on_submit}>
                 <div>
                     <label>{"string"}</label>
                     <input type="text" name="string" value="( . _ .)" required=true/>
@@ -45,15 +45,19 @@ pub fn client() -> Html {
                 </div>
                 <div>
                     <span style="width: 128px"/>
-                    <label class="file-select" style="width: auto">
+                    <label for="image-input" class="file-select" style="width: auto">
                        {"[choose image]"}
-                       <input onchange={on_file_select} type="file" accept="image/*" style="display: none" required=true/>
                     </label>
-                    <span>{" "}</span>
+                    <input onchange={on_file_select}
+                        id="image-input"
+                        type="file"
+                        accept="image/*"
+                        style="width: 1px; height: 1px"
+                        required=true/>
                     <span>{filename}</span>
                 </div>
                 <div>
-                    <button type="submit" formaction="">{"[send]"}</button>
+                    <button>{"[send]"}</button>
                 </div>
             </form>
         </>
