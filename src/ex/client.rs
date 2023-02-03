@@ -1,10 +1,11 @@
+use futures::{SinkExt, StreamExt};
+use gloo_net::websocket::{futures::WebSocket, Message};
 use web_sys::{File, FormData, HtmlFormElement, HtmlInputElement};
-use yew::prelude::*;
+use yew::{platform::spawn_local, prelude::*};
 
 #[function_component(Client)]
 pub fn client() -> Html {
     let file = use_state_eq::<Option<File>, _>(|| None);
-    let filename = file.as_ref().map_or(String::new(), |file| file.name());
 
     let file_clone = file.clone();
     let on_file_input = Callback::from(move |e: Event| {
@@ -24,8 +25,29 @@ pub fn client() -> Html {
         let string = data.get("string").as_string().unwrap();
         let int: u32 = data.get("int").as_string().unwrap().parse().unwrap();
         let float: f32 = data.get("float").as_string().unwrap().parse().unwrap();
-        log::info!("{string}, {int}, {float}")
+        let text = format!("{string}, {int}, {float}");
+
+        log::info!("{text}");
+
+        let sock = WebSocket::open("wss://echo.websocket.org").unwrap();
+        let (mut tx, mut rx) = sock.split();
+
+        spawn_local(async move {
+            log::info!("a");
+            tx.send(Message::Text(text)).await.unwrap();
+            log::info!("b");
+        });
+
+        spawn_local(async move {
+            log::info!("c");
+            while let Some(msg) = rx.next().await {
+                log::info!("{msg:?}");
+            }
+            log::info!("ws closed");
+        })
     });
+
+    let filename = file.as_ref().map_or(String::new(), |file| file.name());
 
     html! {
         <>
