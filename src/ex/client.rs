@@ -29,7 +29,7 @@ pub fn client() -> Html {
 
         log::info!("{text}");
 
-        let sock = WebSocket::open("wss://echo.websocket.org").unwrap();
+        let sock = WebSocket::open("wss://ws.postman-echo.com/raw").unwrap();
         let (mut tx, mut rx) = sock.split();
 
         spawn_local(async move {
@@ -51,7 +51,10 @@ pub fn client() -> Html {
 
     html! {
         <>
-            <style>{"label { display: inline-block; width: 128px; }"}</style>
+            <style>{
+                "label { display: inline-block; width: 128px; } \
+                input { width: 256px; }"
+            }</style>
             <form method="get" onsubmit={on_submit}>
                 <div>
                     <label>{"string"}</label>

@@ -6,6 +6,7 @@ use yew::{platform::spawn_local, prelude::*};
 pub fn server() -> Html {
     use_effect_with_deps(
         |_| {
+            log::info!("what");
             let sock = WebSocket::open("wss://127.0.0.1:7777").unwrap();
             let (mut tx, mut rx) = sock.split();
 
