@@ -8,7 +8,7 @@ pub fn server() -> Html {
         |_| {
             log::info!("what");
             let sock = WebSocket::open("wss://127.0.0.1:7777").unwrap();
-            let (mut tx, mut rx) = sock.split();
+            let (mut _tx, mut rx) = sock.split();
 
             spawn_local(async move {
                 while let Some(msg) = rx.next().await {

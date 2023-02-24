@@ -10,6 +10,8 @@ lto = true
 futures = "0.3.26"
 gloo-net = "0.2.6"
 log = "0.4.17"
+rmp-serde = "1.1.1"
+serde = { version = "1.0.152", features = ["derive"] }
 wasm-logger = "0.2.0"
 web-sys = { version = "0.3.61", features = ["HtmlFormElement", "FormData"]}
 yew = { version = "0.20", features = ["csr"] }

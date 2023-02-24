@@ -1,7 +1,17 @@
 use futures::{SinkExt, StreamExt};
 use gloo_net::websocket::{futures::WebSocket, Message};
+use rmp_serde::{Deserializer, Serializer};
+use serde::{Deserialize, Serialize};
 use web_sys::{File, FormData, HtmlFormElement, HtmlInputElement};
 use yew::{platform::spawn_local, prelude::*};
+
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
+struct TestMessage {
+    string: String,
+    int: u32,
+    float: f32,
+    // TODO: file
+}
 
 #[function_component(Client)]
 pub fn client() -> Html {
@@ -25,23 +35,24 @@ pub fn client() -> Html {
         let string = data.get("string").as_string().unwrap();
         let int: u32 = data.get("int").as_string().unwrap().parse().unwrap();
         let float: f32 = data.get("float").as_string().unwrap().parse().unwrap();
-        let text = format!("{string}, {int}, {float}");
 
-        log::info!("{text}");
+        let msg = TestMessage { string, int, float };
+        let mut buf = Vec::new();
+        msg.serialize(&mut Serializer::new(&mut buf)).unwrap();
 
-        let sock = WebSocket::open("wss://ws.postman-echo.com/raw").unwrap();
+        log::info!("{buf:?}");
+
+        let sock = WebSocket::open("wss://127.0.0.1:7777").unwrap();
         let (mut tx, mut rx) = sock.split();
 
         spawn_local(async move {
-            log::info!("a");
-            tx.send(Message::Text(text)).await.unwrap();
-            log::info!("b");
+            let res = tx.send(Message::Bytes(buf)).await;
+            log::info!("{res:?}");
         });
 
         spawn_local(async move {
-            log::info!("c");
             while let Some(msg) = rx.next().await {
-                log::info!("{msg:?}");
+                log::info!("{:?}", msg);
             }
             log::info!("ws closed");
         })
