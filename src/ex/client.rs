@@ -1,5 +1,3 @@
-use futures::{SinkExt, StreamExt};
-use gloo_net::websocket::{futures::WebSocket, Message};
 use rmp_serde::{Deserializer, Serializer};
 use serde::{Deserialize, Serialize};
 use web_sys::{File, FormData, HtmlFormElement, HtmlInputElement};
@@ -39,23 +37,6 @@ pub fn client() -> Html {
         let msg = TestMessage { string, int, float };
         let mut buf = Vec::new();
         msg.serialize(&mut Serializer::new(&mut buf)).unwrap();
-
-        log::info!("{buf:?}");
-
-        let sock = WebSocket::open("wss://127.0.0.1:7777").unwrap();
-        let (mut tx, mut rx) = sock.split();
-
-        spawn_local(async move {
-            let res = tx.send(Message::Bytes(buf)).await;
-            log::info!("{res:?}");
-        });
-
-        spawn_local(async move {
-            while let Some(msg) = rx.next().await {
-                log::info!("{:?}", msg);
-            }
-            log::info!("ws closed");
-        })
     });
 
     let filename = file.as_ref().map_or(String::new(), |file| file.name());
